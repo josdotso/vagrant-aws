@@ -1,15 +1,15 @@
-# Vagrant AWS Provider
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/mitchellh/vagrant-aws?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Vagrant Fusion Provider
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/mitchellh/vagrant-fusion?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <span class="badges">
-[![Gem Version](https://badge.fury.io/rb/vagrant-aws.png)][gem]
-[![Dependency Status](https://gemnasium.com/mitchellh/vagrant-aws.png)][gemnasium]
+[![Gem Version](https://badge.fury.io/rb/vagrant-fusion.png)][gem]
+[![Dependency Status](https://gemnasium.com/mitchellh/vagrant-fusion.png)][gemnasium]
 </span>
 
-[gem]: https://rubygems.org/gems/vagrant-aws
-[gemnasium]: https://gemnasium.com/mitchellh/vagrant-aws
+[gem]: https://rubygems.org/gems/vagrant-fusion
+[gemnasium]: https://gemnasium.com/mitchellh/vagrant-fusion
 
-This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an [AWS](http://aws.amazon.com)
+This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an [Fusion](http://fusion.amazon.com)
 provider to Vagrant, allowing Vagrant to control and provision machines in
 EC2 and VPC.
 
@@ -23,33 +23,33 @@ EC2 and VPC.
 * Minimal synced folder support via `rsync`.
 * Define region-specific configurations so Vagrant can manage machines
   in multiple regions.
-* Package running instances into new vagrant-aws friendly boxes
+* Package running instances into new vagrant-fusion friendly boxes
 
 ## Usage
 
 Install using standard Vagrant 1.1+ plugin installation methods. After
-installing, `vagrant up` and specify the `aws` provider. An example is
+installing, `vagrant up` and specify the `fusion` provider. An example is
 shown below.
 
 ```
-$ vagrant plugin install vagrant-aws
+$ vagrant plugin install vagrant-fusion
 ...
-$ vagrant up --provider=aws
+$ vagrant up --provider=fusion
 ...
 ```
 
-Of course prior to doing this, you'll need to obtain an AWS-compatible
+Of course prior to doing this, you'll need to obtain an Fusion-compatible
 box file for Vagrant.
 
 ## Quick Start
 
 After installing the plugin (instructions above), the quickest way to get
-started is to actually use a dummy AWS box and specify all the details
+started is to actually use a dummy Fusion box and specify all the details
 manually within a `config.vm.provider` block. So first, add the dummy
 box using any name you want:
 
 ```
-$ vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+$ vagrant box add dummy https://github.com/mitchellh/vagrant-fusion/raw/master/dummy.box
 ...
 ```
 
@@ -60,13 +60,13 @@ your information where necessary.
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
-  config.vm.provider :aws do |aws, override|
-    aws.access_key_id = "YOUR KEY"
-    aws.secret_access_key = "YOUR SECRET KEY"
-    aws.session_token = "SESSION TOKEN"
-    aws.keypair_name = "KEYPAIR NAME"
+  config.vm.provider :fusion do |fusion, override|
+    fusion.access_key_id = "YOUR KEY"
+    fusion.secret_access_key = "YOUR SECRET KEY"
+    fusion.session_token = "SESSION TOKEN"
+    fusion.keypair_name = "KEYPAIR NAME"
 
-    aws.ami = "ami-7747d01e"
+    fusion.ami = "ami-7747d01e"
 
     override.ssh.username = "ubuntu"
     override.ssh.private_key_path = "PATH TO YOUR PRIVATE KEY"
@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-And then run `vagrant up --provider=aws`.
+And then run `vagrant up --provider=fusion`.
 
 This will start an Ubuntu 12.04 instance in the us-east-1 region within
 your account. And assuming your SSH information was filled in properly
@@ -87,24 +87,24 @@ no preconfigured defaults.
 If you have issues with SSH connecting, make sure that the instances
 are being launched with a security group that allows SSH access.
 
-Note: if you don't configure `aws.access_key_id` or `aws_secret_access_key`
+Note: if you don't configure `fusion.access_key_id` or `fusion_secret_access_key`
 it will attempt to read credentials from environment variables first and then
-from `$HOME/.aws/`. You can choose your AWS profile and files location by using
-`aws.aws_profile` and `aws.aws_dir`, however environment variables will always
-have precedence as defined by the [AWS documentation](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
-To use profile `vagrantDev` from your AWS files:
+from `$HOME/.fusion/`. You can choose your Fusion profile and files location by using
+`fusion.fusion_profile` and `fusion.fusion_dir`, however environment variables will always
+have precedence as defined by the [Fusion documentation](http://docs.fusion.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+To use profile `vagrantDev` from your Fusion files:
 ```ruby
   # this first line can actually be omitted
-  aws.aws_dir = ENV['HOME'] + "/.aws/"
-  aws.aws_profile = "vagrantDev"
+  fusion.fusion_dir = ENV['HOME'] + "/.fusion/"
+  fusion.fusion_profile = "vagrantDev"
 ```
 
 
 ## Box Format
 
 Every provider in Vagrant must introduce a custom box format. This
-provider introduces `aws` boxes. You can view an example box in
-the [example_box/ directory](https://github.com/mitchellh/vagrant-aws/tree/master/example_box).
+provider introduces `fusion` boxes. You can view an example box in
+the [example_box/ directory](https://github.com/mitchellh/vagrant-fusion/tree/master/example_box).
 That directory also contains instructions on how to build a box.
 
 The box format is basically just the required `metadata.json` file
@@ -115,14 +115,14 @@ provider-specific configuration for this provider.
 
 This provider exposes quite a few provider-specific configuration options:
 
-* `access_key_id` - The access key for accessing AWS
+* `access_key_id` - The access key for accessing Fusion
 * `ami` - The AMI id to boot, such as "ami-12345678"
 * `availability_zone` - The availability zone within the region to launch
   the instance. If nil, it will use the default set by Amazon.
-* `aws_profile` - AWS profile in your config files. Defaults to *default*.
-* `aws_dir` - AWS config and credentials location. Defaults to *$HOME/.aws/*.
+* `fusion_profile` - Fusion profile in your config files. Defaults to *default*.
+* `fusion_dir` - Fusion config and credentials location. Defaults to *$HOME/.fusion/*.
 * `instance_ready_timeout` - The number of seconds to wait for the instance
-  to become "ready" in AWS. Defaults to 120 seconds.
+  to become "ready" in Fusion. Defaults to 120 seconds.
 * `instance_check_interval` - The number of seconds to wait to check the instance's
  state
 * `instance_package_timeout` - The number of seconds to wait for the instance
@@ -136,15 +136,15 @@ This provider exposes quite a few provider-specific configuration options:
 * `monitoring` - Set to "true" to enable detailed monitoring.
 * `session_token` - The session token provided by STS
 * `private_ip_address` - The private IP address to assign to an instance
-  within a [VPC](http://aws.amazon.com/vpc/)
+  within a [VPC](http://fusion.amazon.com/vpc/)
 * `elastic_ip` - Can be set to 'true', or to an existing Elastic IP address. 
   If true, allocate a new Elastic IP address to the instance. If set
   to an existing Elastic IP address, assign the address to the instance.
 * `region` - The region to start the instance in, such as "us-east-1"
-* `secret_access_key` - The secret access key for accessing AWS
+* `secret_access_key` - The secret access key for accessing Fusion
 * `security_groups` - An array of security groups for the instance. If this
   instance will be launched in VPC, this must be a list of security group
-  Name. For a nondefault VPC, you must use security group IDs instead (http://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html).
+  Name. For a nondefault VPC, you must use security group IDs instead (http://docs.fusion.amazon.com/cli/latest/reference/ec2/run-instances.html).
 * `iam_instance_profile_arn` - The Amazon resource name (ARN) of the IAM Instance
     Profile to associate with the instance
 * `iam_instance_profile_name` - The name of the IAM Instance Profile to associate
@@ -161,14 +161,14 @@ This provider exposes quite a few provider-specific configuration options:
 * `tenancy` - When running in a VPC configure the tenancy of the instance.  Supports 'default' and 'dedicated'.
 * `tags` - A hash of tags to set on the machine.
 * `package_tags` - A hash of tags to set on the ami generated during the package operation.
-* `use_iam_profile` - If true, will use [IAM profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/instance-profiles.html)
+* `use_iam_profile` - If true, will use [IAM profiles](http://docs.fusion.amazon.com/IAM/latest/UserGuide/instance-profiles.html)
   for credentials.
 * `block_device_mapping` - Amazon EC2 Block Device Mapping Property
 * `elb` - The ELB name to attach to the instance.
 * `unregister_elb_from_az` - Removes the ELB from the AZ on removal of the last instance if true (default). In non default VPC this has to be false.
 * `terminate_on_shutdown` - Indicates whether an instance stops or terminates
   when you initiate shutdown from the instance.
-* `endpoint` - The endpoint URL for connecting to AWS (or an AWS-like service). Only required for non AWS clouds, such as [eucalyptus](https://github.com/eucalyptus/eucalyptus/wiki).
+* `endpoint` - The endpoint URL for connecting to Fusion (or an Fusion-like service). Only required for non Fusion clouds, such as [eucalyptus](https://github.com/eucalyptus/eucalyptus/wiki).
 
 These can be set like typical provider-specific configuration:
 
@@ -176,15 +176,15 @@ These can be set like typical provider-specific configuration:
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider :aws do |aws|
-    aws.access_key_id = "foo"
-    aws.secret_access_key = "bar"
+  config.vm.provider :fusion do |fusion|
+    fusion.access_key_id = "foo"
+    fusion.secret_access_key = "bar"
   end
 end
 ```
 
-Note that you do not have to hard code your `aws.access_key_id` or `aws.secret_access_key`
-as they will be retrieved from the enviornment variables `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`.
+Note that you do not have to hard code your `fusion.access_key_id` or `fusion.secret_access_key`
+as they will be retrieved from the enviornment variables `Fusion_ACCESS_KEY` and `Fusion_SECRET_KEY`.
 
 In addition to the above top-level configs, you can use the `region_config`
 method to specify region-specific overrides within your Vagrantfile. Note
@@ -195,16 +195,16 @@ region you want to actually use, however. This looks like this:
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider :aws do |aws|
-    aws.access_key_id = "foo"
-    aws.secret_access_key = "bar"
-    aws.region = "us-east-1"
+  config.vm.provider :fusion do |fusion|
+    fusion.access_key_id = "foo"
+    fusion.secret_access_key = "bar"
+    fusion.region = "us-east-1"
 
     # Simple region config
-    aws.region_config "us-east-1", :ami => "ami-12345678"
+    fusion.region_config "us-east-1", :ami => "ami-12345678"
 
     # More comprehensive region config
-    aws.region_config "us-west-2" do |region|
+    fusion.region_config "us-west-2" do |region|
       region.ami = "ami-87654321"
       region.keypair_name = "company-west"
     end
@@ -219,14 +219,14 @@ the top-level configurations, as you would probably expect.
 ## Networks
 
 Networking features in the form of `config.vm.network` are not
-supported with `vagrant-aws`, currently. If any of these are
+supported with `vagrant-fusion`, currently. If any of these are
 specified, Vagrant will emit a warning, but will otherwise boot
-the AWS machine.
+the Fusion machine.
 
 ## Synced Folders
 
 There is minimal support for synced folders. Upon `vagrant up`,
-`vagrant reload`, and `vagrant provision`, the AWS provider will use
+`vagrant reload`, and `vagrant provision`, the Fusion provider will use
 `rsync` (if available) to uni-directionally sync the folder to
 the remote machine over SSH.
 
@@ -243,8 +243,8 @@ To use tags, simply define a hash of key/value for the tags you want to associat
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider "aws" do |aws|
-    aws.tags = {
+  config.vm.provider "fusion" do |fusion|
+    fusion.tags = {
 	  'Name' => 'Some Name',
 	  'Some Key' => 'Some Value'
     }
@@ -260,12 +260,12 @@ You can specify user data for the instance being booted.
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider "aws" do |aws|
+  config.vm.provider "fusion" do |fusion|
     # Option 1: a single string
-    aws.user_data = "#!/bin/bash\necho 'got user data' > /tmp/user_data.log\necho"
+    fusion.user_data = "#!/bin/bash\necho 'got user data' > /tmp/user_data.log\necho"
 
     # Option 2: use a file
-    aws.user_data = File.read("user_data.txt")
+    fusion.user_data = File.read("user_data.txt")
   end
 end
 ```
@@ -278,8 +278,8 @@ Need more space on your instance disk? Increase the disk size.
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider "aws" do |aws|
-    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 50 }]
+  config.vm.provider "fusion" do |fusion|
+    fusion.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 50 }]
   end
 end
 ```
@@ -292,15 +292,15 @@ You can automatically attach an instance to an ELB during boot and detach on des
 Vagrant.configure("2") do |config|
   # ... other stuff
 
-  config.vm.provider "aws" do |aws|
-    aws.elb = "production-web"
+  config.vm.provider "fusion" do |fusion|
+    fusion.elb = "production-web"
   end
 end
 ```
 
 ## Development
 
-To work on the `vagrant-aws` plugin, clone this repository out, and use
+To work on the `vagrant-fusion` plugin, clone this repository out, and use
 [Bundler](http://gembundler.com) to get the dependencies:
 
 ```
@@ -318,9 +318,9 @@ the plugin without installing it into your Vagrant environment by just
 creating a `Vagrantfile` in the top level of this directory (it is gitignored)
 and add the following line to your `Vagrantfile` 
 ```ruby
-Vagrant.require_plugin "vagrant-aws"
+Vagrant.require_plugin "vagrant-fusion"
 ```
 Use bundler to execute Vagrant:
 ```
-$ bundle exec vagrant up --provider=aws
+$ bundle exec vagrant up --provider=fusion
 ```

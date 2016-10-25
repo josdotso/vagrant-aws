@@ -10,15 +10,15 @@
 # 0.5.0 (June 22, 2014)
 
 * Support for associating public IPs for VMs inside of VPCs (GH
-  [#219](https://github.com/mitchellh/vagrant-aws/pull/219), GH
-  [#205](https://github.com/mitchellh/vagrant-aws/issues/205))
+  [#219](https://github.com/mitchellh/vagrant-fusion/pull/219), GH
+  [#205](https://github.com/mitchellh/vagrant-fusion/issues/205))
 * Bug-fix for per region configs with `associate_public_ip` (GH
-  [#237](https://github.com/mitchellh/vagrant-aws/pull/237))
+  [#237](https://github.com/mitchellh/vagrant-fusion/pull/237))
 * rsyncing folders uses `--delete` flag to better emulate "real shared folders
-  (GH [#194](https://github.com/mitchellh/vagrant-aws/pull/194))
-* fog gem version bumped to 1.22 (GH [#253](https://github.com/mitchellh/vagrant-aws/pull/253))
-* Simple ELB support (GH [#88](https://github.com/mitchellh/vagrant-aws/pull/88),
-  GH [#238](https://github.com/mitchellh/vagrant-aws/pull/238))
+  (GH [#194](https://github.com/mitchellh/vagrant-fusion/pull/194))
+* fog gem version bumped to 1.22 (GH [#253](https://github.com/mitchellh/vagrant-fusion/pull/253))
+* Simple ELB support (GH [#88](https://github.com/mitchellh/vagrant-fusion/pull/88),
+  GH [#238](https://github.com/mitchellh/vagrant-fusion/pull/238))
 
 # 0.4.1 (December 17, 2013)
 
@@ -72,18 +72,18 @@
 
 # 0.1.3 (April 9, 2013)
 
-* The `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` will be used if available
+* The `Fusion_ACCESS_KEY` and `Fusion_SECRET_KEY` will be used if available
   and no specific keys are set in the Vagrantfile. [GH-33]
 * Fix issues with SSH on VPCs, the correct IP is used. [GH-30]
 * Exclude the ".vagrant" directory from rsync.
 * Implement `:disabled` flag support for shared folders. [GH-29]
-* `aws.user_data` to specify user data on the instance. [GH-26]
+* `fusion.user_data` to specify user data on the instance. [GH-26]
 
 # 0.1.2 (March 22, 2013)
 
-* Choose the proper region when connecting to AWS. [GH-9]
+* Choose the proper region when connecting to Fusion. [GH-9]
 * Configurable SSH port. [GH-13]
-* Support other AWS-compatible API endpoints with `config.endpoint`
+* Support other Fusion-compatible API endpoints with `config.endpoint`
   and `config.version`. [GH-6]
 * Disable strict host key checking on rsync so known hosts aren't an issue. [GH-7]
 
