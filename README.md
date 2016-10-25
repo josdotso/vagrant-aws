@@ -1,28 +1,19 @@
 # Vagrant Fusion Provider
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/mitchellh/vagrant-fusion?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-<span class="badges">
-[![Gem Version](https://badge.fury.io/rb/vagrant-fusion.png)][gem]
-[![Dependency Status](https://gemnasium.com/mitchellh/vagrant-fusion.png)][gemnasium]
-</span>
 
 [gem]: https://rubygems.org/gems/vagrant-fusion
-[gemnasium]: https://gemnasium.com/mitchellh/vagrant-fusion
 
-This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an [Fusion](http://fusion.amazon.com)
+This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an VMware Fusion
 provider to Vagrant, allowing Vagrant to control and provision machines in
-EC2 and VPC.
+VMware Fusion.
 
 **NOTE:** This plugin requires Vagrant 1.2+,
 
 ## Features
 
-* Boot EC2 or VPC instances.
+* Boot VMware Fusion instances.
 * SSH into the instances.
 * Provision the instances with any built-in Vagrant provisioner.
 * Minimal synced folder support via `rsync`.
-* Define region-specific configurations so Vagrant can manage machines
-  in multiple regions.
 * Package running instances into new vagrant-fusion friendly boxes
 
 ## Usage
@@ -49,7 +40,7 @@ manually within a `config.vm.provider` block. So first, add the dummy
 box using any name you want:
 
 ```
-$ vagrant box add dummy https://github.com/mitchellh/vagrant-fusion/raw/master/dummy.box
+$ vagrant box add dummy https://github.com/josdotso/vagrant-fusion/raw/master/dummy.box
 ...
 ```
 
@@ -104,7 +95,7 @@ To use profile `vagrantDev` from your Fusion files:
 
 Every provider in Vagrant must introduce a custom box format. This
 provider introduces `fusion` boxes. You can view an example box in
-the [example_box/ directory](https://github.com/mitchellh/vagrant-fusion/tree/master/example_box).
+the [example_box/ directory](https://github.com/josdotso/vagrant-fusion/tree/master/example_box).
 That directory also contains instructions on how to build a box.
 
 The box format is basically just the required `metadata.json` file
